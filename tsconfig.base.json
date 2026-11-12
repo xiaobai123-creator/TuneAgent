@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": ["ES2024"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@coridis/agent-loop": ["./packages/core/agent-loop/src/index.ts"],
+      "@coridis/contracts": ["./packages/core/contracts/src/index.ts"],
+      "@coridis/fs": ["./packages/fs/fs/src/index.ts"],
+      "@coridis/fs-local": ["./packages/fs/fs-local/src/index.ts"],
+      "@coridis/llm": ["./packages/core/llm/src/index.ts"],
+      "@coridis/llm-deepseek": ["./packages/llm/llm-deepseek/src/index.ts"],
+      "@coridis/session": ["./packages/core/session/src/index.ts"],
+      "@coridis/tool-fs": ["./packages/fs/tool-fs/src/index.ts"],
+      "@coridis/tool-web": ["./packages/web/tool-web/src/index.ts"],
+      "@coridis/tools": ["./packages/core/tools/src/index.ts"],
+      "@coridis/web": ["./packages/web/web/src/index.ts"],
+      "@coridis/web-fetch-http": ["./packages/web/web-fetch-http/src/index.ts"],
+      "@coridis/web-search-http": ["./packages/web/web-search-http/src/index.ts"]
+    }
+  }
+}
+

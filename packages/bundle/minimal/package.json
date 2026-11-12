@@ -1,0 +1,30 @@
+{
+  "name": "@coridis/bundle-minimal",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "coridis": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@coridis/agent-loop": "workspace:*",
+    "@coridis/fs": "workspace:*",
+    "@coridis/fs-local": "workspace:*",
+    "@coridis/llm": "workspace:*",
+    "@coridis/llm-deepseek": "workspace:*",
+    "@coridis/session": "workspace:*",
+    "@coridis/tool-fs": "workspace:*",
+    "@coridis/tool-web": "workspace:*",
+    "@coridis/tools": "workspace:*",
+    "@coridis/web": "workspace:*",
+    "@coridis/web-fetch-http": "workspace:*",
+    "@coridis/web-search-http": "workspace:*"
+  }
+}
+

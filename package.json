@@ -1,0 +1,21 @@
+{
+  "name": "coridis",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "tsx apps/cli/src/index.ts",
+    "typecheck": "tsc --noEmit --pretty false",
+    "clean": "rm -rf node_modules apps/*/lib packages/*/*/lib"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0"
+  }
+}
+

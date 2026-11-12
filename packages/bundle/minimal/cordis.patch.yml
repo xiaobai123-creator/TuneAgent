@@ -1,0 +1,42 @@
+# Minimal Coridis plugin tree. Rows are ordered by service dependency, then providers, tools, and the loop.
+
+- id: session
+  name: '@coridis/session'
+
+- id: llm
+  name: '@coridis/llm'
+
+- id: llm-deepseek
+  name: '@coridis/llm-deepseek'
+  config:
+    model: deepseek-chat
+
+- id: fs
+  name: '@coridis/fs'
+
+- id: fs-local
+  name: '@coridis/fs-local'
+  config:
+    root: !!js process.cwd()
+
+- id: web
+  name: '@coridis/web'
+
+- id: web-search-http
+  name: '@coridis/web-search-http'
+
+- id: web-fetch-http
+  name: '@coridis/web-fetch-http'
+
+- id: tools
+  name: '@coridis/tools'
+
+- id: tool-fs
+  name: '@coridis/tool-fs'
+
+- id: tool-web
+  name: '@coridis/tool-web'
+
+- id: agent-loop
+  name: '@coridis/agent-loop'
+

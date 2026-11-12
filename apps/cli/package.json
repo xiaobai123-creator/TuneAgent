@@ -1,0 +1,25 @@
+{
+  "name": "@coridis/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "bin": {
+    "coridis": "lib/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@coridis/bundle-minimal": "workspace:*",
+    "@deepseek-ai/cordis": "^4.1.0"
+  }
+}
+
