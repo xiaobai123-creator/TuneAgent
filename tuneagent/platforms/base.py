@@ -5,9 +5,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from tuneagent.cleaning.pipeline import SUPPORTED_SORT_VALUES
 from tuneagent.cleaning.models import Song
-
-SUPPORTED_SORT_VALUES = frozenset({"hot", "plays", "likes", "favorites"})
 
 
 class AdapterError(RuntimeError):

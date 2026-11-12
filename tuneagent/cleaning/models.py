@@ -57,6 +57,23 @@ class Song:
         """Return a display-friendly artist string for single-column output."""
         return " / ".join(self.artists) if self.artists else "未知歌手"
 
+    def to_dict(self, *, include_raw: bool = False) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "platform": self.platform,
+            "id": self.id,
+            "title": self.title,
+            "artists": list(self.artists),
+            "artist": self.artist,
+            "album": self.album,
+            "duration_ms": self.duration_ms,
+            "fee": self.fee,
+            "copyright_id": self.copyright_id,
+            "status": self.status,
+        }
+        if include_raw:
+            payload["raw"] = dict(self.raw)
+        return payload
+
     @classmethod
     def from_netease(cls, raw_song: Mapping[str, Any]) -> Song:
         raw_copy = dict(raw_song)

@@ -1,0 +1,123 @@
+{
+  "query": {
+    "keyword": "国风",
+    "sort_by": "hot",
+    "limit": 15
+  },
+  "platform": "netease-mock",
+  "candidate_count": 20,
+  "report": {
+    "raw_count": 20,
+    "deduplicated_count": 20,
+    "available_count": 7,
+    "final_count": 7,
+    "target_limit": 15,
+    "duplicate_count": 0,
+    "unavailable_count": 13,
+    "sort_by": "hot",
+    "sort_metric_name": "原始榜单顺序",
+    "sort_fallback_reason": "平台返回默认搜索顺序，未提供独立热度指标；保留原始顺序作为热度回退"
+  },
+  "songs": [
+    {
+      "platform": "netease",
+      "id": 2068046512,
+      "title": "落了白",
+      "artists": [
+        "蒋雪儿Snow.J"
+      ],
+      "artist": "蒋雪儿Snow.J",
+      "album": "落了白",
+      "duration_ms": 180821,
+      "fee": 1,
+      "copyright_id": 2713484,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 3334714206,
+      "title": "春庭雪（这一世 太漫长却止步咫尺天涯间）",
+      "artists": [
+        "纳米"
+      ],
+      "artist": "纳米",
+      "album": "春庭雪",
+      "duration_ms": 240900,
+      "fee": 0,
+      "copyright_id": 2713520,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 1394167216,
+      "title": "知我",
+      "artists": [
+        "国风堂",
+        "哦漏"
+      ],
+      "artist": "国风堂 / 哦漏",
+      "album": "知我",
+      "duration_ms": 277321,
+      "fee": 1,
+      "copyright_id": 0,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 28793140,
+      "title": "半壶纱",
+      "artists": [
+        "刘珂矣"
+      ],
+      "artist": "刘珂矣",
+      "album": "半壶纱",
+      "duration_ms": 221994,
+      "fee": 1,
+      "copyright_id": 1415841,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 3330620554,
+      "title": "琵琶曲",
+      "artists": [
+        "郑浩Z-Hao",
+        "冰洁"
+      ],
+      "artist": "郑浩Z-Hao / 冰洁",
+      "album": "琵琶曲",
+      "duration_ms": 235975,
+      "fee": 1,
+      "copyright_id": 1416618,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 33162226,
+      "title": "悟空",
+      "artists": [
+        "戴荃"
+      ],
+      "artist": "戴荃",
+      "album": "悟空 (Live版)",
+      "duration_ms": 200235,
+      "fee": 0,
+      "copyright_id": 0,
+      "status": 0
+    },
+    {
+      "platform": "netease",
+      "id": 1479526505,
+      "title": "虞兮叹",
+      "artists": [
+        "闻人听書_"
+      ],
+      "artist": "闻人听書_",
+      "album": "虞兮叹",
+      "duration_ms": 210000,
+      "fee": 1,
+      "copyright_id": 1416842,
+      "status": 0
+    }
+  ]
+}
