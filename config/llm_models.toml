@@ -1,0 +1,18 @@
+# Models are attempted in ascending priority order.
+# API keys are read from the named environment variables and never stored here.
+
+[[models]]
+name = "deepseek"
+model = "deepseek-chat"
+base_url = "https://api.deepseek.com"
+api_key_env = "DEEPSEEK_API_KEY"
+priority = 10
+temperature = 0.2
+
+[[models]]
+name = "openai-backup"
+model = "gpt-4o-mini"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+priority = 20
+temperature = 0.2

@@ -8,6 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "cli": "tsx apps/cli/src/tuneagent-cli.ts",
     "dev": "tsx apps/cli/src/index.ts",
     "typecheck": "tsc --noEmit --pretty false",
     "clean": "rm -rf node_modules apps/*/lib packages/*/*/lib"

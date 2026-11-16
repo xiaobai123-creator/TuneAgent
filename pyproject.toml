@@ -12,6 +12,14 @@ dependencies = []
 [project.optional-dependencies]
 test = ["pytest>=8"]
 ui = ["gradio>=5"]
+real = ["netease-encode-api==1.2.3", "requests>=2.32,<3"]
+agent = [
+  "openai>=1",
+  "prompt-toolkit>=3",
+  "python-dotenv>=1",
+  "rich>=13",
+  "tomli>=2; python_version<'3.11'",
+]
 
 [tool.setuptools.packages.find]
 include = ["tuneagent*"]

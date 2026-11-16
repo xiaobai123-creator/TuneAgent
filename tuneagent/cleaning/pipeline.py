@@ -89,6 +89,7 @@ class CleaningReport:
 
     def to_dict(self) -> dict[str, str | int]:
         return {
+            "summary": self.summary(),
             "raw_count": self.raw_count,
             "deduplicated_count": self.deduplicated_count,
             "available_count": self.available_count,

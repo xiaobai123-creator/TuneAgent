@@ -16,4 +16,7 @@ dist/
 downloads/*
 !downloads/.gitkeep
 !downloads/ATTRIBUTION.md
+.netease_cookie
+cookies.txt
+.tuneagent_history
 

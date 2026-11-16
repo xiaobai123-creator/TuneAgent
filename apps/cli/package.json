@@ -15,7 +15,8 @@
     }
   },
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "search": "tsx src/tuneagent-cli.ts search"
   },
   "dependencies": {
     "@coridis/bundle-minimal": "workspace:*",
