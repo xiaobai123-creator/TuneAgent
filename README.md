@@ -4,6 +4,15 @@ Coridis 是一个按 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-
 
 当前仓库只有骨架，没有具体实现。所有插件入口、provider 和 Agent Loop 都会以 `not implemented` 失败，等待后续分阶段实现 `web_search`、`web_fetch`、`read_file` 和 DeepSeek 模型调用。
 
+## 快速开始
+
+- **Windows：** 双击项目根目录的 `run.bat`。
+- **macOS / Linux：** 在项目根目录运行 `bash run.sh`。
+
+启动脚本会自动检测 Python、创建并激活 `.venv`、安装
+`.[all]` 全部依赖，然后启动交互式 CLI。首次安装需要网络；失败时窗口会保留
+并显示中文错误提示。
+
 ## 架构原则
 
 - **Everything is a plugin**：模型、工具、文件系统、Web 能力和 Agent Loop 都是 Cordis 插件。

@@ -20,6 +20,19 @@ agent = [
   "rich>=13",
   "tomli>=2; python_version<'3.11'",
 ]
+cookie = ["browser-cookie3>=0.20"]
+all = [
+  "browser-cookie3>=0.20",
+  "gradio>=5",
+  "netease-encode-api==1.2.3",
+  "openai>=1",
+  "prompt-toolkit>=3",
+  "pytest>=8",
+  "python-dotenv>=1",
+  "requests>=2.32,<3",
+  "rich>=13",
+  "tomli>=2; python_version<'3.11'",
+]
 
 [tool.setuptools.packages.find]
 include = ["tuneagent*"]
