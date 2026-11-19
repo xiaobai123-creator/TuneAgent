@@ -119,7 +119,7 @@ def _read_cookie_file(path: Path) -> dict[str, str]:
         raise MissingCredentialsError(f"Cookie 文件不存在：{path}")
 
     mode = stat.S_IMODE(path.stat().st_mode)
-    if mode & 0o077:
+    if os.name == "posix" and mode & 0o077:
         raise CookieFilePermissionError(
             f"Cookie 文件权限不安全：{path}；请执行 chmod 600 {path}"
         )

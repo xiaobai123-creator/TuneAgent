@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import getpass
 import sys
 from pathlib import Path
 from typing import Any, Mapping
@@ -40,6 +41,8 @@ from tuneagent.agent.llm_client import (
 )
 from tuneagent.agent.tool_executor import MusicToolExecutor
 from tuneagent.cleaning.models import Song
+from tuneagent.platforms.netease_auth import NeteaseAuthService
+from tuneagent.platforms.real_download import RealDownloadError
 
 APP_VERSION = "0.1.0"
 DEFAULT_PROMPT = "国风 按热度 前15"
@@ -109,6 +112,24 @@ def format_duration(duration_ms: int | None) -> str:
     return f"{minutes}:{seconds:02d}"
 
 
+def availability_label(fee: Any) -> tuple[str, str]:
+    if isinstance(fee, int) and not isinstance(fee, bool):
+        if fee in {0, 1}:
+            return "✅ 免费可下", "green"
+        if fee == 8:
+            return "🔒 VIP受限", "red"
+    return "❔ 状态未知", "dim"
+
+
+def display_download_path(raw_path: Any) -> str:
+    path = Path(str(raw_path)).expanduser()
+    try:
+        relative_path = path.resolve().relative_to(PROJECT_ROOT)
+    except (OSError, ValueError):
+        relative_path = path
+    return relative_path.as_posix()
+
+
 def render_search_result(
     console: Console,
     data: Mapping[str, Any],
@@ -131,10 +152,13 @@ def render_search_result(
     table.add_column("专辑", style="white")
     table.add_column("时长", justify="right")
     table.add_column("fee", justify="right")
+    table.add_column("可用性", no_wrap=True)
 
     for index, raw_song in enumerate(songs, start=1):
         if not isinstance(raw_song, dict):
             continue
+        fee = raw_song.get("fee", "-")
+        availability, availability_style = availability_label(fee)
         table.add_row(
             Text(str(index)),
             Text(str(raw_song.get("id", "-"))),
@@ -142,7 +166,8 @@ def render_search_result(
             Text(str(raw_song.get("artist", "-"))),
             Text(str(raw_song.get("album") or "未知专辑")),
             Text(format_duration(raw_song.get("duration_ms"))),
-            Text(str(raw_song.get("fee", "-"))),
+            Text(str(fee)),
+            Text(availability, style=availability_style),
         )
     console.print(table)
 
@@ -178,18 +203,11 @@ def render_event(console: Console, event: AgentEvent) -> None:
     elif event.kind == EventKind.STATUS:
         console.print(f"[cyan]{event.message}[/cyan]")
     elif event.kind == EventKind.DOWNLOAD_RESULT:
-        data = event.data
+        saved_path = display_download_path(event.data.get("path", "-"))
         console.print(
-            Panel(
-                Text(
-                    f"歌曲 ID: {data.get('song_id', '-')}\n"
-                    f"文件: {data.get('path', '-')}\n"
-                    f"大小: {data.get('size_bytes', '-')} bytes\n"
-                    f"SHA-256: {data.get('sha256', '-')}",
-                ),
-                title="[bold green]下载完成[/bold green]",
-                border_style="green",
-            )
+            f"✅ 文件已保存至服务器的 {saved_path}。"
+            "如果您使用 VS Code 远程连接，请在左侧文件树中右键该文件"
+            "选择 Download 下载到本地"
         )
 
 
@@ -216,13 +234,37 @@ def render_models(console: Console, engine: AgentEngine) -> None:
     console.print("[dim]切换模型：/model <序号或名称>[/dim]")
 
 
-def check_login(console: Console, engine: AgentEngine) -> None:
-    with console.status("[cyan]正在检查网易云登录状态...", spinner="dots"):
-        status = engine.check_login()
-    if status["ok"]:
-        console.print(f"[bold green]{status['message']}[/bold green]")
-    else:
-        console.print(f"[bold yellow]{status['message']}[/bold yellow]")
+def interactive_login(
+    console: Console,
+    auth_service: NeteaseAuthService,
+) -> None:
+    try:
+        raw_cookie = getpass.getpass(
+            "请粘贴网易云 Cookie（MUSIC_U=... 或仅 MUSIC_U 值）: "
+        )
+    except (EOFError, KeyboardInterrupt):
+        console.print("[yellow]已取消登录。[/yellow]")
+        return
+    if not raw_cookie.strip():
+        console.print("[yellow]Cookie 不能为空。[/yellow]")
+        return
+
+    try:
+        with console.status("[cyan]正在验证网易云登录状态...", spinner="dots"):
+            result = auth_service.login_with_cookie(raw_cookie)
+    except (OSError, RealDownloadError, ValueError) as error:
+        console.print(f"[bold red]登录失败：{error}[/bold red]")
+        console.print("[dim]原 Cookie 文件未被覆盖。[/dim]")
+        return
+
+    try:
+        display_path = result.cookie_path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        display_path = result.cookie_path.as_posix()
+    if display_path != ".netease_cookie":
+        display_path = Path(display_path).name
+    console.print("[bold green]网易云登录验证成功。[/bold green]")
+    console.print(f"[green]Cookie 已安全保存到 {display_path}[/green]")
 
 
 def main() -> int:
@@ -245,6 +287,7 @@ def main() -> int:
 
     tools = MusicToolExecutor(PROJECT_ROOT, adapter_mode="auto")
     engine = AgentEngine(llm_client, tools)
+    auth_service = NeteaseAuthService(PROJECT_ROOT)
     render_banner(console, engine)
 
     history_path = PROJECT_ROOT / ".tuneagent_history"
@@ -293,7 +336,7 @@ def main() -> int:
                         "- `下载 3334714206`（离线模式）\n\n"
                         "**命令**\n\n"
                         "- `/model` 查看模型，`/model 2` 切换\n"
-                        "- `/login` 检查网易云 Cookie\n"
+                        "- `/login` 录入并验证网易云 Cookie\n"
                         "- `/exit` 退出"
                     ),
                     border_style="bright_blue",
@@ -313,16 +356,21 @@ def main() -> int:
                 console.print(f"[bold green]已切换模型：{selected}[/bold green]")
             continue
         if lowered == "/login":
-            check_login(console, engine)
+            interactive_login(console, auth_service)
             continue
         if user_text.startswith("/"):
             console.print("[red]未知命令，输入 /help 查看帮助。[/red]")
             continue
 
         last_progress_bucket = -1
+        download_succeeded = False
 
         def handle_event(event: AgentEvent) -> None:
-            nonlocal last_progress_bucket
+            nonlocal download_succeeded, last_progress_bucket
+            if event.kind == EventKind.DOWNLOAD_RESULT:
+                download_succeeded = True
+            if event.kind == EventKind.ASSISTANT_MESSAGE and download_succeeded:
+                return
             if event.kind == EventKind.DOWNLOAD_PROGRESS:
                 downloaded = int(event.data.get("downloaded", 0))
                 total_value = event.data.get("total")
