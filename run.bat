@@ -29,7 +29,7 @@ if errorlevel 1 goto :activate_failed
 
 set "PIP_DEFAULT_TIMEOUT=30"
 echo 正在安装 TuneAgent 全部依赖...
-python -m pip install --retries 2 -e ".[all]"
+python -m pip install -e ".[all]" -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
 if errorlevel 1 goto :install_failed
 
 echo.
@@ -72,8 +72,7 @@ exit /b 1
 
 :install_failed
 echo.
-echo [错误] 依赖安装失败，可能是网络超时或 PyPI 无法访问。
-echo 请检查网络后重新双击 run.bat。
+echo 依赖安装失败，请检查网络连接或尝试科学上网。按任意键退出。
 echo.
 pause
 exit /b 1
