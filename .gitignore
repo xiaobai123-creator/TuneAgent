@@ -18,5 +18,6 @@ downloads/*
 !downloads/ATTRIBUTION.md
 .netease_cookie
 cookies.txt
+netease_cookie.txt
 .tuneagent_history
 

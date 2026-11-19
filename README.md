@@ -57,3 +57,6 @@ pnpm typecheck
 3. `web`、两个 Web provider 与 `tool-web`：加入 `web_search`、`web_fetch`。
 4. `apps/cli` 与 profile 装配：形成最小可运行入口。
 
+🔑 关于如何配置网易云登录凭证，请参阅
+[Cookie 获取指南](docs/cookie_guide.md)。
+
