@@ -62,12 +62,16 @@ def _search_web_once(query: str, max_results: int) -> list[dict]:
         link = (item.findtext("link") or "").strip()
         if not title or not link:
             continue
+        if not link.startswith(("http://", "https://")):
+            continue
         description = item.findtext("description") or ""
+        published = (item.findtext("pubDate") or "").strip()
         results.append(
             {
                 "title": title,
                 "url": link,
                 "snippet": _strip_html(description),
+                "published": published,
             }
         )
         if len(results) >= max_results:

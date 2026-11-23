@@ -14,15 +14,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "bing_rss_sample.xml"
 
 
-def _rss_feed(description: str = "摘要") -> bytes:
+def _rss_feed(
+    description: str = "摘要",
+    link: str = "https://example.com/test",
+) -> bytes:
     escaped_description = html.escape(description, quote=False)
+    escaped_link = html.escape(link, quote=False)
     return f"""<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
   <channel>
     <title>Bing Search</title>
     <item>
       <title>测试标题</title>
-      <link>https://example.com/test</link>
+      <link>{escaped_link}</link>
       <description>{escaped_description}</description>
     </item>
   </channel>
@@ -62,6 +66,34 @@ class WebSearchTests(unittest.TestCase):
             results = search_web("周杰伦", max_results=1)
 
         self.assertEqual(len(results[0]["snippet"]), 200)
+
+    def test_ignores_non_http_links(self) -> None:
+        payload = _rss_feed(link="javascript:alert(1)")
+        with patch(
+            "tuneagent.platforms.web_search.urllib.request.urlopen",
+            return_value=io.BytesIO(payload),
+        ):
+            results = search_web("危险链接", max_results=1)
+
+        self.assertEqual(results, [])
+
+    def test_results_include_published_field(self) -> None:
+        with patch(
+            "tuneagent.platforms.web_search.urllib.request.urlopen",
+            return_value=io.BytesIO(_rss_feed()),
+        ):
+            missing_results = search_web("无日期", max_results=1)
+
+        with patch(
+            "tuneagent.platforms.web_search.urllib.request.urlopen",
+            return_value=io.BytesIO(FIXTURE_PATH.read_bytes()),
+        ):
+            fixture_results = search_web("周杰伦", max_results=1)
+
+        self.assertIn("published", missing_results[0])
+        self.assertEqual(missing_results[0]["published"], "")
+        self.assertIn("published", fixture_results[0])
+        self.assertTrue(fixture_results[0]["published"])
 
     def test_max_results_limits_output(self) -> None:
         payload = FIXTURE_PATH.read_bytes()

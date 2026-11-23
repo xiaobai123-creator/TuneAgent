@@ -204,6 +204,14 @@ class AgentEngine:
                         }
                         emit(EventKind.ERROR, f"工具参数或执行失败：{error}")
                     else:
+                        if (
+                            call.name == "web_search"
+                            and content.get("ok") is True
+                        ):
+                            emit(
+                                EventKind.STATUS,
+                                f"已检索到 {content.get('count', 0)} 条网页结果",
+                            )
                         self._emit_tool_result(emit, tool_result)
 
                     self.messages.append(
