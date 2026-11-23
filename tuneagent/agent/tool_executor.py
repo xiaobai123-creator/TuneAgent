@@ -22,6 +22,7 @@ from tuneagent.platforms.real_download import (
     RealDownloadResult,
     RealNeteaseDownloader,
 )
+from tuneagent.platforms.web_search import search_web_safe
 
 SEARCH_TOOL = {
     "type": "function",
@@ -64,6 +65,35 @@ SEARCH_TOOL = {
     },
 }
 
+WEB_SEARCH_TOOL = {
+    "type": "function",
+    "function": {
+        "name": "web_search",
+        "description": (
+            "搜索公开网页，返回标题、链接和摘要；"
+            "用于查询实时信息和非音乐领域知识"
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "网页搜索关键词。",
+                },
+                "max_results": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 5,
+                    "description": "最多返回的网页结果数。",
+                },
+            },
+            "required": ["query"],
+            "additionalProperties": False,
+        },
+    },
+}
+
 DOWNLOAD_TOOL = {
     "type": "function",
     "function": {
@@ -87,7 +117,7 @@ DOWNLOAD_TOOL = {
     },
 }
 
-TOOL_DEFINITIONS = [SEARCH_TOOL, DOWNLOAD_TOOL]
+TOOL_DEFINITIONS = [SEARCH_TOOL, WEB_SEARCH_TOOL, DOWNLOAD_TOOL]
 
 DownloaderFactory = Callable[[], RealNeteaseDownloader]
 
@@ -286,6 +316,33 @@ class MusicToolExecutor:
                 ok=True,
                 content=result.to_tool_content(),
                 search_result=result,
+            )
+
+        if name == "web_search":
+            query = arguments.get("query")
+            max_results = arguments.get("max_results", 5)
+            if not isinstance(query, str) or not query.strip():
+                raise ValueError("web_search.query 必须是非空字符串")
+            if not isinstance(max_results, int) or isinstance(max_results, bool):
+                raise ValueError("web_search.max_results 必须是整数")
+            if not 1 <= max_results <= 10:
+                raise ValueError("web_search.max_results 必须在 1 到 10 之间")
+            results, error = search_web_safe(query.strip(), max_results)
+            if error:
+                return ToolExecutionResult(
+                    name=name,
+                    ok=False,
+                    content={"ok": False, "error": error},
+                )
+            return ToolExecutionResult(
+                name=name,
+                ok=True,
+                content={
+                    "ok": True,
+                    "query": query.strip(),
+                    "count": len(results),
+                    "results": results,
+                },
             )
 
         if name == "download_song":
