@@ -21,3 +21,10 @@ cookies.txt
 netease_cookie.txt
 .tuneagent_history
 
+# Collector runtime data
+data/
+logs/
+*.db
+*.db-wal
+*.db-shm
+

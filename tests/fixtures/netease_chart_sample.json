@@ -1,0 +1,89 @@
+{
+  "code": 200,
+  "result": {
+    "name": "云音乐新歌榜",
+    "trackCount": 6,
+    "tracks": [
+      {
+        "id": 101,
+        "name": "新歌 A",
+        "artists": [{"name": "歌手甲"}],
+        "album": {"name": "专辑甲"},
+        "duration": 200000,
+        "fee": 0,
+        "copyrightId": 1001,
+        "status": 0,
+        "lastRank": null
+      },
+      {
+        "id": 102,
+        "name": "新歌 B",
+        "artists": [{"name": "歌手乙"}],
+        "album": {"name": "专辑乙"},
+        "duration": 180000,
+        "fee": 8,
+        "copyrightId": 1002,
+        "status": 0,
+        "lastRank": 15
+      },
+      {
+        "id": 103,
+        "name": "新歌 C",
+        "artists": [{"name": "歌手丙"}],
+        "album": null,
+        "duration": null,
+        "fee": 1,
+        "copyrightId": 1003,
+        "status": 0,
+        "lastRank": 3
+      },
+      {
+        "id": 101,
+        "name": "新歌 A",
+        "artists": [{"name": "歌手甲"}],
+        "album": {"name": "专辑甲"},
+        "duration": 200000,
+        "fee": 0,
+        "copyrightId": 1001,
+        "status": 0,
+        "lastRank": 1
+      },
+      {
+        "id": 104,
+        "name": "新歌 D",
+        "artists": [],
+        "album": {"name": ""},
+        "duration": 0,
+        "fee": null,
+        "copyrightId": 1004,
+        "status": 0,
+        "lastRank": null
+      },
+      {
+        "id": 105,
+        "name": "新歌 E",
+        "artists": [{"name": "歌手戊"}],
+        "album": {"name": "专辑戊"},
+        "duration": 240000,
+        "fee": 4,
+        "copyrightId": 1005,
+        "status": 0,
+        "lastRank": null
+      },
+      {
+        "name": "缺少 ID 的歌曲",
+        "artists": [{"name": "歌手己"}],
+        "album": {"name": "专辑己"},
+        "duration": 120000,
+        "fee": 0
+      },
+      {
+        "id": 106,
+        "artists": [{"name": "歌手庚"}],
+        "album": {"name": "专辑庚"},
+        "duration": 120000,
+        "fee": 0
+      }
+    ]
+  }
+}

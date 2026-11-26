@@ -1,0 +1,17 @@
+# TuneAgent unattended collector configuration.
+
+[collector]
+db_path = "data/tuneagent.db"
+log_path = "logs/watch.log"
+interval_seconds = 1800
+failure_backoff_seconds = 300
+max_backoff_seconds = 3600
+request_timeout_seconds = 20
+retries = 2
+retry_backoff_seconds = 2.0
+
+[source]
+name = "netease-new-songs"
+type = "netease-chart"
+chart_id = 3779629
+chart_url = "https://music.163.com/api/playlist/detail"
