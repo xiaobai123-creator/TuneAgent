@@ -17,20 +17,58 @@ TuneAgent 是一个面向“数据爬虫与清洗”课程的本地音乐发现 
 
 ## 快速开始
 
-### 一键启动
+### 方式一：安装成全局命令（推荐）
+
+安装一次后，在任意目录输入 `tuneagent` 就能启动，和 `codex` 的用法类似。
+
+**Linux**
+
+```bash
+./install.sh          # 如果提示权限不足，先运行 chmod +x install.sh
+```
+
+看到“安装完成”后，关闭当前终端再重新打开，运行：
+
+```bash
+tuneagent
+```
+
+**Windows**
+
+双击项目根目录的 `install.bat`。看到“安装完成”后关闭窗口，重新打开 PowerShell 或 CMD，运行：
+
+```bat
+tuneagent
+```
+
+**macOS**
+
+已预留同样的 Unix 安装脚本，可尝试 `./install.sh`；目前尚未专门测试，课程验收以 Linux / Windows 为准。
+
+安装脚本会优先使用 `uv`，没有就自动准备 `pipx`，只安装命令行需要的 `.[cli]` 依赖。相比原来的 `.[all]`，不会下载 Gradio、pandas、numpy 等大包，首次安装更快、占用更小。
+
+> 安装采用 editable 模式：以后 `git pull` 更新代码会直接生效，不需要重新安装；只有依赖发生变化时才需要再跑一次安装脚本。
+
+### 方式二：一键脚本（不安装全局命令）
 
 - **Linux / macOS**：在项目根目录运行 `bash run.sh`
 - **Windows**：双击项目根目录的 `run.bat`
 
-启动脚本会自动检测 Python、创建 `.venv`、安装 `.[all]` 依赖，然后启动交互式 CLI。首次安装需要网络。
+脚本会在项目内创建 `.venv`，安装轻量的 `.[cli]` 依赖，然后直接启动 CLI。适合不想改动系统 PATH 的情况。
 
-### 手动启动
+### 手动启动（开发调试）
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
-python -m pip install -e ".[all]"
+python -m pip install -e ".[cli]"
 python scripts/interactive_cli.py
+```
+
+如果需要 Gradio 页面、完整测试或浏览器 Cookie 支持，再安装完整依赖：
+
+```bash
+python -m pip install -e ".[all]"
 ```
 
 ### 配置模型
@@ -55,6 +93,7 @@ OPENAI_API_KEY=your-openai-api-key
 
 | 入口 | 命令 | 说明 |
 | --- | --- | --- |
+| 全局 CLI 命令 | `tuneagent` | 运行 `install.sh` / `install.bat` 后，可在任意目录启动交互式 CLI |
 | 交互式 CLI | `python scripts/interactive_cli.py` | 主入口，支持模型对话、工具调用、下载确认 |
 | 单次命令模式 | `python scripts/run_cli.py '国风 按热度 前15'` | 适合调试和自动化；默认 Mock，加 `--real` 使用网易云公开搜索 |
 | 24 小时采集 | `python scripts/run_watch.py --status` | 查看采集状态；`--once` 只抓一轮 |
@@ -145,7 +184,10 @@ TS 骨架不参与 `run.sh` 和 `run_watch.py` 的主流程；`apps/cli` 中保�
 
 ## 测试
 
+测试需要完整依赖（含 Gradio、pytest 等）；如果当前环境只装过 `.[cli]`，先补装：
+
 ```bash
+python -m pip install -e ".[all]"
 python -m pytest -q
 ```
 

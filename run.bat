@@ -28,8 +28,8 @@ call ".venv\Scripts\activate.bat"
 if errorlevel 1 goto :activate_failed
 
 set "PIP_DEFAULT_TIMEOUT=30"
-echo 正在安装 TuneAgent 全部依赖...
-python -m pip install -e ".[all]" -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
+echo 正在安装 TuneAgent CLI 依赖...
+python -m pip install -e ".[cli]" -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
 if errorlevel 1 goto :install_failed
 
 echo.

@@ -9,6 +9,9 @@ description = "A local, pluggable music discovery agent for a crawler course pro
 requires-python = ">=3.10"
 dependencies = []
 
+[project.scripts]
+tuneagent = "tuneagent.cli_entry:main"
+
 [project.optional-dependencies]
 test = ["pytest>=8"]
 ui = ["gradio>=5"]
@@ -21,6 +24,15 @@ agent = [
   "tomli>=2; python_version<'3.11'",
 ]
 cookie = ["browser-cookie3>=0.20"]
+cli = [
+  "netease-encode-api==1.2.3",
+  "openai>=1",
+  "prompt-toolkit>=3",
+  "python-dotenv>=1",
+  "requests>=2.32,<3",
+  "rich>=13",
+  "tomli>=2; python_version<'3.11'",
+]
 all = [
   "browser-cookie3>=0.20",
   "gradio>=5",

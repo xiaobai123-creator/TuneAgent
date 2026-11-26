@@ -57,8 +57,8 @@ fi
 . ".venv/bin/activate" || fail "激活 Python 虚拟环境失败。"
 
 export PIP_DEFAULT_TIMEOUT="${PIP_DEFAULT_TIMEOUT:-30}"
-printf '正在安装 TuneAgent 全部依赖...\n'
-if ! python -m pip install -e ".[all]" \
+printf '正在安装 TuneAgent CLI 依赖...\n'
+if ! python -m pip install -e ".[cli]" \
   -i https://pypi.tuna.tsinghua.edu.cn/simple \
   --trusted-host pypi.tuna.tsinghua.edu.cn; then
   fail "依赖安装失败，请检查网络连接或尝试科学上网。按任意键退出。"
