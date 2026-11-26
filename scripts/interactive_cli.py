@@ -54,6 +54,7 @@ _BANNER_LINES = (
     "  | | | |_| | |\\  | |___ / ___ \\ |_| | |___| |\\  | | |",
     "  |_|  \\___/|_| \\_|_____/_/   \\_\\____|_____|_| \\_| |_|",
 )
+_BANNER_WIDTH = max(len(line) for line in _BANNER_LINES)
 
 
 def _hex_to_rgb(color: str) -> tuple[int, int, int]:
@@ -77,8 +78,11 @@ def _gradient_text(value: str, start: str, end: str) -> Text:
 
 
 def render_banner(console: Console, engine: AgentEngine) -> None:
+    padding = max(0, (console.width - _BANNER_WIDTH) // 2)
     for line in _BANNER_LINES:
-        console.print(_gradient_text(line, "#2ee6ff", "#f06cff"))
+        console.print(
+            Text(" " * padding) + _gradient_text(line, "#2ee6ff", "#f06cff")
+        )
 
     status = Table.grid(padding=(0, 2))
     status.add_column(style="bold cyan", no_wrap=True)
